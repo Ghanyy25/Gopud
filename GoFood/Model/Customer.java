@@ -12,8 +12,8 @@ public class Customer extends User {
 
     public void lihatMenu(List<Menu> menu) {
         System.out.println("\n--- Daftar Menu ---");
-        for (Menu item : menu) {
-            System.out.println(item);
+        for (int i = 0; i < menu.size(); i++) {
+            System.out.println((i + 1) + ". " + menu.get(i));
         }
     }
 
@@ -21,15 +21,15 @@ public class Customer extends User {
         Scanner scanner = new Scanner(System.in);
         int pilih;
         do {
-            System.out.print("Masukkan ID menu yang ingin dipesan (0 untuk selesai): ");
-            pilih = scanner.nextInt();
-            for (Menu item : menu) {
-                if (item.getId() == pilih) {
-                    cart.add(item);
-                    System.out.println(item.getNama() + " ditambahkan ke keranjang.");
-                }
-            }
-        } while (pilih != 0);
+            System.out.print("Masukkan nomor menu yang ingin dipesan (0 untuk selesai): ");
+            pilih = scanner.nextInt() - 1;
+                    scanner.nextLine();
+                    if (pilih >= 0 && pilih < menu.size()) {
+                        cart.add(menu.get(pilih));
+                    } else {
+                        System.out.println("Nomor tidak valid.");
+                    }
+        } while (pilih >= 0);
 
         Order order = new Order(username, cart);
         order.printStruk();
