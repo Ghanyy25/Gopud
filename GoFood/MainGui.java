@@ -15,6 +15,7 @@ public class MainGui {
     private static CardLayout cardLayout;
     private static JPanel mainPanel;
     private static JFrame frame;
+    private static JTextArea customerMenuArea = new JTextArea();    
 
     public static void main(String[] args) {
         // Menu awal
@@ -84,11 +85,10 @@ public class MainGui {
     private static JPanel customerPanel() {
         JPanel panel = new JPanel(new BorderLayout());
 
-        JTextArea menuArea = new JTextArea();
-        menuArea.setEditable(false);
-        JScrollPane scroll = new JScrollPane(menuArea);
-        updateMenuText(menuArea);
-
+        customerMenuArea.setEditable(false);
+        JScrollPane scroll = new JScrollPane(customerMenuArea);
+        updateMenuText(customerMenuArea);
+        
         JTextField inputId = new JTextField();
         JButton btnPesan = new JButton("Pesan");
         JButton btnSelesai = new JButton("Selesai");
@@ -165,6 +165,7 @@ public class MainGui {
                 double harga = Double.parseDouble(hargaStr);
                 daftarMenu.add(new Menu(nama, harga));
                 updateMenuText(menuArea);
+                updateMenuText(customerMenuArea);
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(frame, "Harga tidak valid.");
             }
