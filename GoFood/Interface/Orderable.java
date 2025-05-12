@@ -1,4 +1,4 @@
-package program.GoFood.Interface;
+package GoFood.Interface;
 
 public interface Orderable {
 

@@ -1,10 +1,13 @@
-package program.GoFood.Model;
+package GoFood.Model;
 
 import java.util.*;
 
 public class Manager extends User {
+    public String pass;
+
     public Manager(String username) {
         super(username);
+        this.pass = "1234";
     }
 
     public void menuManager(List<Menu> menu) {
@@ -30,33 +33,46 @@ public class Manager extends User {
                     menu.add(new Menu(nama, harga));
                     System.out.println("Menu berhasil ditambahkan.");
                     break;
+
                 case 2:
-                    System.out.print("ID menu yang ingin diedit: ");
-                    int idEdit = scanner.nextInt();
+                    tampilkanMenu(menu);
+                    System.out.print("Nomor menu yang ingin diedit: ");
+                    int indexEdit = scanner.nextInt() - 1;
                     scanner.nextLine();
-                    for (Menu item : menu) {
-                        if (item.getId() == idEdit) {
-                            System.out.print("Nama baru: ");
-                            item.setNama(scanner.nextLine());
-                            System.out.print("Harga baru: ");
-                            item.setHarga(scanner.nextDouble());
-                            System.out.println("Menu berhasil diubah.");
-                        }
+                    if (indexEdit >= 0 && indexEdit < menu.size()) {
+                        System.out.print("Nama baru: ");
+                        menu.get(indexEdit).setNama(scanner.nextLine());
+                        System.out.print("Harga baru: ");
+                        menu.get(indexEdit).setHarga(scanner.nextDouble());
+                        System.out.println("Menu berhasil diubah.");
+                    } else {
+                        System.out.println("Nomor tidak valid.");
                     }
                     break;
+
                 case 3:
-                    System.out.print("ID menu yang ingin dihapus: ");
-                    int idHapus = scanner.nextInt();
-                    menu.removeIf(item -> item.getId() == idHapus);
-                    System.out.println("Menu berhasil dihapus.");
-                    break;
-                case 4:
-                    for (Menu item : menu) {
-                        System.out.println(item);
+                    tampilkanMenu(menu);
+                    System.out.print("Nomor menu yang ingin dihapus: ");
+                    int indexHapus = scanner.nextInt() - 1;
+                    if (indexHapus >= 0 && indexHapus < menu.size()) {
+                        menu.remove(indexHapus);
+                        System.out.println("Menu berhasil dihapus.");
+                    } else {
+                        System.out.println("Nomor tidak valid.");
                     }
+                    break;
+
+                case 4:
+                    tampilkanMenu(menu);
                     break;
             }
         } while (pilih != 0);
-        scanner.close();
+    }
+
+    private void tampilkanMenu(List<Menu> menu) {
+        System.out.println("\n--- Daftar Menu ---");
+        for (int i = 0; i < menu.size(); i++) {
+            System.out.println((i + 1) + ". " + menu.get(i));
+        }
     }
 }
