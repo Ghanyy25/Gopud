@@ -1,9 +1,9 @@
-package program.GoFood;
+package GoFood;
 
-import program.GoFood.Model.Menu;
-import program.GoFood.Model.Order;
-import program.GoFood.Model.Customer;
-import program.GoFood.Model.Manager;
+import GoFood.Model.Menu;
+import GoFood.Model.Order;
+import GoFood.Model.Customer;
+import GoFood.Model.Manager;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -98,21 +98,20 @@ public class MainGui {
 
         btnPesan.addActionListener(e -> {
             try {
-                int id = Integer.parseInt(inputId.getText());
-                boolean found = false;
-                for (Menu item : daftarMenu) {
-                    if (item.getId() == id) {
-                        cart.add(item);
-                        JOptionPane.showMessageDialog(frame, item.getNama() + " ditambahkan.");
-                        found = true;
-                        break;
-                    }
+                int nomor = Integer.parseInt(inputId.getText());
+                int index = nomor - 1;
+                if (index >= 0 && index < daftarMenu.size()) {
+                    Menu item = daftarMenu.get(index);
+                    cart.add(item);
+                    JOptionPane.showMessageDialog(frame, item.getNama() + " ditambahkan.");
+                } else {
+                    JOptionPane.showMessageDialog(frame, "Nomor menu tidak valid.");
                 }
-                if (!found) JOptionPane.showMessageDialog(frame, "ID tidak ditemukan.");
             } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(frame, "Masukkan ID yang valid.");
+                JOptionPane.showMessageDialog(frame, "Masukkan nomor menu yang valid.");
             }
         });
+
 
         btnSelesai.addActionListener(e -> {
             String nama = JOptionPane.showInputDialog("Nama Anda:");
@@ -164,7 +163,6 @@ public class MainGui {
             String hargaStr = JOptionPane.showInputDialog("Harga:");
             try {
                 double harga = Double.parseDouble(hargaStr);
-                int id = daftarMenu.size() + 1;
                 daftarMenu.add(new Menu(nama, harga));
                 updateMenuText(menuArea);
             } catch (NumberFormatException ex) {
@@ -172,21 +170,23 @@ public class MainGui {
             }
         });
 
+
         btnHapus.addActionListener(e -> {
-            String idStr = JOptionPane.showInputDialog("ID menu yang dihapus:");
+            String nomorStr = JOptionPane.showInputDialog("Nomor menu yang dihapus:");
             try {
-                int id = Integer.parseInt(idStr);
-                boolean removed = daftarMenu.removeIf(item -> item.getId() == id);
-        
-                if (removed) {
+                int nomor = Integer.parseInt(nomorStr);
+                int index = nomor - 1;
+                if (index >= 0 && index < daftarMenu.size()) {
+                    daftarMenu.remove(index);
                     updateMenuText(menuArea);
                 } else {
-                    JOptionPane.showMessageDialog(frame, "ID tidak ditemukan.");
+                    JOptionPane.showMessageDialog(frame, "Nomor tidak ditemukan.");
                 }
             } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(frame, "ID tidak valid.");
+                JOptionPane.showMessageDialog(frame, "Nomor tidak valid.");
             }
         });
+
         
 
         btnBack.addActionListener(e -> cardLayout.show(mainPanel, "menuUtama"));
@@ -202,10 +202,12 @@ public class MainGui {
     }
 
     private static void updateMenuText(JTextArea area) {
-        StringBuilder sb = new StringBuilder("--- Menu ---\n");
-        for (Menu item : daftarMenu) {
-            sb.append(item.toString()).append("\n");
-        }
-        area.setText(sb.toString());
+    StringBuilder sb = new StringBuilder("--- Menu ---\n");
+    for (int i = 0; i < daftarMenu.size(); i++) {
+        Menu item = daftarMenu.get(i);
+        sb.append((i + 1)).append(". ").append(item).append("\n");
     }
+    area.setText(sb.toString());
+    }
+
 }

@@ -1,4 +1,4 @@
-package program.GoFood.Model;
+package GoFood.Model;
 
 import java.util.*;
 

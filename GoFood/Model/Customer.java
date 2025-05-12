@@ -1,4 +1,4 @@
-package program.GoFood.Model;
+package GoFood.Model;
 
 import java.util.*;
 
@@ -33,6 +33,6 @@ public class Customer extends User {
 
         Order order = new Order(username, cart);
         order.printStruk();
-        scanner.close();
+
     }
 }

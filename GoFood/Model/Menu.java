@@ -1,4 +1,4 @@
-package program.GoFood.Model;
+package GoFood.Model;
 
 
 public class Menu {
@@ -33,7 +33,7 @@ public class Menu {
 
     @Override
     public String toString() {
-        return id + ". " + nama + " - Rp" + harga;
+        return ". " + nama + " - Rp" + harga;
     }
 }
 
