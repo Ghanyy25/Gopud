@@ -2,11 +2,8 @@ package GoFood;
 
 import GoFood.Model.Menu;
 import GoFood.Model.Order;
-import GoFood.Model.Customer;
-import GoFood.Model.Manager;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +13,7 @@ public class MainGui {
     private static JPanel mainPanel;
     private static JFrame frame;
     private static JTextArea customerMenuArea = new JTextArea();    
+    private static JTextArea managerMenuArea = new JTextArea();    
 
     public static void main(String[] args) {
         // Menu awal
@@ -48,32 +46,36 @@ public class MainGui {
         JButton btnCustomer = new JButton("Customer");
         JButton btnManager = new JButton("Manager");
 
-        btnCustomer.addActionListener(e -> cardLayout.show(mainPanel, "customer"));
+        btnCustomer.addActionListener(e -> {
+            updateMenuText(customerMenuArea);
+            cardLayout.show(mainPanel, "customer");
+        });
+
         btnManager.addActionListener(e -> {
             JPanel loginPanel = new JPanel(new GridLayout(2, 2));
             JTextField usernameField = new JTextField();
             JPasswordField passwordField = new JPasswordField();
-        
+
             loginPanel.add(new JLabel("Username:"));
             loginPanel.add(usernameField);
             loginPanel.add(new JLabel("Password:"));
             loginPanel.add(passwordField);
-        
+
             int result = JOptionPane.showConfirmDialog(frame, loginPanel,
                     "Login Manager", JOptionPane.OK_CANCEL_OPTION);
-        
+
             if (result == JOptionPane.OK_OPTION) {
                 String username = usernameField.getText();
                 String password = new String(passwordField.getPassword());
-        
+
                 if (username.equals("admin") && password.equals("1234")) {
+                    updateMenuText(managerMenuArea);
                     cardLayout.show(mainPanel, "manager");
                 } else {
                     JOptionPane.showMessageDialog(frame, "Login gagal. Username atau password salah.");
                 }
             }
         });
-        
 
         panel.add(label);
         panel.add(btnCustomer);
@@ -87,8 +89,7 @@ public class MainGui {
 
         customerMenuArea.setEditable(false);
         JScrollPane scroll = new JScrollPane(customerMenuArea);
-        updateMenuText(customerMenuArea);
-        
+
         JTextField inputId = new JTextField();
         JButton btnPesan = new JButton("Pesan");
         JButton btnSelesai = new JButton("Selesai");
@@ -111,7 +112,6 @@ public class MainGui {
                 JOptionPane.showMessageDialog(frame, "Masukkan nomor menu yang valid.");
             }
         });
-
 
         btnSelesai.addActionListener(e -> {
             String nama = JOptionPane.showInputDialog("Nama Anda:");
@@ -149,10 +149,8 @@ public class MainGui {
     private static JPanel managerPanel() {
         JPanel panel = new JPanel(new BorderLayout());
 
-        JTextArea menuArea = new JTextArea();
-        menuArea.setEditable(false);
-        JScrollPane scroll = new JScrollPane(menuArea);
-        updateMenuText(menuArea);
+        managerMenuArea.setEditable(false);
+        JScrollPane scroll = new JScrollPane(managerMenuArea);
 
         JButton btnTambah = new JButton("Tambah Menu");
         JButton btnHapus = new JButton("Hapus Menu");
@@ -164,13 +162,11 @@ public class MainGui {
             try {
                 double harga = Double.parseDouble(hargaStr);
                 daftarMenu.add(new Menu(nama, harga));
-                updateMenuText(menuArea);
-                updateMenuText(customerMenuArea);
+                updateMenuText(managerMenuArea);
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(frame, "Harga tidak valid.");
             }
         });
-
 
         btnHapus.addActionListener(e -> {
             String nomorStr = JOptionPane.showInputDialog("Nomor menu yang dihapus:");
@@ -179,7 +175,7 @@ public class MainGui {
                 int index = nomor - 1;
                 if (index >= 0 && index < daftarMenu.size()) {
                     daftarMenu.remove(index);
-                    updateMenuText(menuArea);
+                    updateMenuText(managerMenuArea);
                 } else {
                     JOptionPane.showMessageDialog(frame, "Nomor tidak ditemukan.");
                 }
@@ -187,8 +183,6 @@ public class MainGui {
                 JOptionPane.showMessageDialog(frame, "Nomor tidak valid.");
             }
         });
-
-        
 
         btnBack.addActionListener(e -> cardLayout.show(mainPanel, "menuUtama"));
 
@@ -203,12 +197,11 @@ public class MainGui {
     }
 
     private static void updateMenuText(JTextArea area) {
-    StringBuilder sb = new StringBuilder("--- Menu ---\n");
-    for (int i = 0; i < daftarMenu.size(); i++) {
-        Menu item = daftarMenu.get(i);
-        sb.append((i + 1)).append(". ").append(item).append("\n");
+        StringBuilder sb = new StringBuilder("--- Menu ---\n");
+        for (int i = 0; i < daftarMenu.size(); i++) {
+            Menu item = daftarMenu.get(i);
+            sb.append((i + 1)).append(". ").append(item).append("\n");
+        }
+        area.setText(sb.toString());
     }
-    area.setText(sb.toString());
-    }
-
 }
