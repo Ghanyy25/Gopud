@@ -33,7 +33,7 @@ public class Menu {
 
     @Override
     public String toString() {
-        return ". " + nama + " - Rp" + harga;
+        return nama + " - Rp" + harga;
     }
 }
 
